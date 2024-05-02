@@ -6,21 +6,26 @@ def main():
     win = Window(800, 600)
 
     # top left box
-    c = Cell(win)
-    c.draw(280, 50, 330, 100)
+    l1 = Cell(win)
+    l1.draw(280, 150, 330, 200)
 
     # top right box
-    c = Cell(win)
-    c.draw(470, 50, 520, 100)
+    r1 = Cell(win)
+    r1.draw(470, 150, 520, 200)
 
-    # bottom box
-    c = Cell(win)
-    c.has_top_wall = False
-    c.draw(280, 150, 520, 200)
+    # bottom left box
+    l2 = Cell(win)
+    l2.draw(280, 350, 330, 400)
 
-    # surrounding box
-    c = Cell(win)
-    c.draw(250, 20, 550, 230)
+    # bottom right box
+    r2 = Cell(win)
+    r2.draw(470, 350, 520, 400)
+
+    # draw lines between cells
+    l1.draw_move(r1, undo=False)
+    r1.draw_move(r2, undo=False)
+    l2.draw_move(l1, undo=False)
+    l1.draw_move(r2, undo=True)
 
     win.wait_for_close()
 
