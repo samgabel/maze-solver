@@ -1,17 +1,27 @@
-from graphics import Window, Point, Line
+from graphics import Window
+from cell import Cell
 
 
 def main():
     win = Window(800, 600)
 
-    l1 = Line(Point(230, 50), Point(270, 50))
-    win.draw_line(l1, "red")
-    l2 = Line(Point(530, 50), Point(570, 50))
-    win.draw_line(l2, "red")
-    l3 = Line(Point(230, 150), Point(570, 150))
-    win.draw_line(l3, "red")
+    # top left box
+    c = Cell(win)
+    c.draw(280, 50, 330, 100)
+
+    # top right box
+    c = Cell(win)
+    c.draw(470, 50, 520, 100)
+
+    # bottom box
+    c = Cell(win)
+    c.has_top_wall = False
+    c.draw(280, 150, 520, 200)
+
+    # surrounding box
+    c = Cell(win)
+    c.draw(250, 20, 550, 230)
 
     win.wait_for_close()
-
 
 main()
