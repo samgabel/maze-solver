@@ -23,6 +23,7 @@ class Maze:
         self._cell_size_y = cell_size_y
         self._win = win
         self._create_cells()
+        self._break_entrance_and_exit()
 
     def _create_cells(self):
         # create matrix of cells where `_num_col` are the num of `Cell` in the inner list and `_num_row` are the num of inner lists
@@ -58,3 +59,12 @@ class Maze:
         # refresh ui screen after every `_draw_cell` method call
         self._win.redraw()
         time.sleep(0.03)
+
+    def _break_entrance_and_exit(self):
+        # set the proper state of the entrace and exit Cell objects
+        self._cells[0][0].has_top_wall = False
+        self._cells[-1][-1].has_bottom_wall = False
+
+        # redraw the entrace and exit cells
+        self._draw_cell(0, 0)
+        self._draw_cell(self._num_rows - 1, self._num_cols - 1)

@@ -39,19 +39,31 @@ class Cell:
         self._x2 = x2
         self._y2 = y2
 
-        # draw cell walls based on instance variables `self.has_*`
-        if self.has_left_wall == True:
-            l = Line(Point(x1, y1), Point(x1, y2))
+        # draw cell walls and colors based on instance variables `self.has_*`
+        # left -------------------------------
+        l = Line(Point(x1, y1), Point(x1, y2))
+        if self.has_left_wall:
             self._win.draw_line(l, "black")
-        if self.has_right_wall == True:
-            l = Line(Point(x2, y1), Point(x2, y2))
+        else:
+            self._win.draw_line(l, "white")
+        # right ------------------------------
+        l = Line(Point(x2, y1), Point(x2, y2))
+        if self.has_right_wall:
             self._win.draw_line(l, "black")
-        if self.has_top_wall == True:
-            l = Line(Point(x1, y1), Point(x2, y1))
+        else:
+            self._win.draw_line(l, "white")
+        # top --------------------------------
+        l = Line(Point(x1, y1), Point(x2, y1))
+        if self.has_top_wall:
             self._win.draw_line(l, "black")
-        if self.has_bottom_wall == True:
-            l = Line(Point(x1, y2), Point(x2, y2))
+        else:
+            self._win.draw_line(l, "white")
+        # bottom -----------------------------
+        l = Line(Point(x1, y2), Point(x2, y2))
+        if self.has_bottom_wall:
             self._win.draw_line(l, "black")
+        else:
+            self._win.draw_line(l, "white")
 
     def draw_move(self, to_cell: 'Cell', undo=False):
         """
