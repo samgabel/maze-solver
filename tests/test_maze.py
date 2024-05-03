@@ -23,3 +23,9 @@ def test_maze_reset_cells_visited():
     for row in m1._cells:
         for cell in row:
             assert cell.visited == False
+
+def test_maze_solve():
+    num_cols = 12
+    num_rows = 10
+    m1 = Maze(0, 0, num_rows, num_cols, 10, 10, win=None, seed=0)
+    assert m1.solve() == True
