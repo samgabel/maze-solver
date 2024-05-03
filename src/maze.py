@@ -102,7 +102,7 @@ class Maze:
 
             # knock down the walls betweeen the current and chosen cells
             diff_x = next_idx[1] - j  # 1 means new cell to the right / -1 means new cell to the left
-            diff_y = next_idx[0] - i  # 1 means new cell above        / -1 means new cell below
+            diff_y = next_idx[0] - i  # 1 means new cell below        / -1 means new cell above
             if diff_x == 1:
                 self._cells[i][j].has_right_wall = False
                 self._cells[i][j + 1].has_left_wall = False
@@ -110,11 +110,11 @@ class Maze:
                 self._cells[i][j].has_left_wall = False
                 self._cells[i][j - 1].has_right_wall = False
             if diff_y == 1:
-                self._cells[i][j].has_top_wall = False
-                self._cells[i + 1][j].has_bottom_wall = False
-            if diff_y == -1:
                 self._cells[i][j].has_bottom_wall = False
-                self._cells[i - 1][j].has_top_wall = False
+                self._cells[i + 1][j].has_top_wall = False
+            if diff_y == -1:
+                self._cells[i][j].has_top_wall = False
+                self._cells[i - 1][j].has_bottom_wall = False
 
             # recursively call the new cell
             self._break_through_walls_r(next_idx[0], next_idx[1])
