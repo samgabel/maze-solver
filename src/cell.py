@@ -20,6 +20,8 @@ class Cell:
         self._y2: int
         self._win = win
 
+        self.visited = False
+
     def draw(self, x1: int, y1: int, x2: int, y2: int):
         """
         Draw the cell onto the Window object

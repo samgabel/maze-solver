@@ -1,10 +1,10 @@
 from graphics import Window
 from cell import Cell
-import time
+import time, random
 
 
 class Maze:
-    def __init__(self, x1: int, y1: int, num_rows: int, num_cols: int, cell_size_x: int, cell_size_y: int, win: Window | None):
+    def __init__(self, x1: int, y1: int, num_rows: int, num_cols: int, cell_size_x: int, cell_size_y: int, win: Window | None, seed: int | None = None):
         """
         Render in a maze grid (a matrix of Cell objects) based on the parameters listed below
 
@@ -13,6 +13,7 @@ class Maze:
         `num_rows` , `num_cols` : how big is the maze in terms of number of cells in the matrix
         `cell_size_x` , `cell_size_y` : how big is each of the cells in the matrix
         `win` : the window object, or optionally set `win=None` for testing
+        `seed` : if not specified, the seed will be randomized, set `seed=0` for testing
         """
 
         self._x1 = x1
@@ -22,8 +23,11 @@ class Maze:
         self._cell_size_x = cell_size_x
         self._cell_size_y = cell_size_y
         self._win = win
+        self._seed = random.seed(seed)
+
         self._create_cells()
         self._break_entrance_and_exit()
+        self._break_through_walls_r(0, 0)
 
     def _create_cells(self):
         # create matrix of cells where `_num_col` are the num of `Cell` in the inner list and `_num_row` are the num of inner lists
@@ -68,3 +72,48 @@ class Maze:
         # redraw the entrace and exit cells
         self._draw_cell(0, 0)
         self._draw_cell(self._num_rows - 1, self._num_cols - 1)
+
+    def _break_through_walls_r(self, i: int, j: int):
+        self._cells[i][j].visited = True
+        while True:
+            # list to store available Cell directions
+            to_visit = []
+
+            # figure out what cells are available to go to and append to list
+            if j > 0 and self._cells[i][j - 1].visited == False:
+                to_visit.append([i, j - 1])
+            if i > 0 and self._cells[i - 1][j].visited == False:
+                to_visit.append([i - 1, j])
+            if j < self._num_cols - 1 and self._cells[i][j + 1].visited == False:
+                to_visit.append([i, j + 1])
+            if i < self._num_rows - 1 and self._cells[i + 1][j].visited == False:
+                to_visit.append([i + 1, j])
+
+            # if there is nowhere left to go
+            if len(to_visit) == 0:
+                self._draw_cell(i, j)
+                return
+
+            # randomly decide which cell indices to go to out of `to_visit` indices
+            direction_idx = random.randrange(len(to_visit))
+            next_idx = to_visit[direction_idx]
+
+            # knock down the walls betweeen the current and chosen cells
+            diff_x = next_idx[1] - j  # 1 means new cell to the right / -1 means new cell to the left
+            diff_y = next_idx[0] - i  # 1 means new cell above        / -1 means new cell below
+            if diff_x == 1:
+                self._cells[i][j].has_right_wall = False
+                self._cells[i][j + 1].has_left_wall = False
+            if diff_x == -1:
+                self._cells[i][j].has_left_wall = False
+                self._cells[i][j - 1].has_right_wall = False
+            if diff_y == 1:
+                self._cells[i][j].has_top_wall = False
+                self._cells[i + 1][j].has_bottom_wall = False
+            if diff_y == -1:
+                self._cells[i][j].has_bottom_wall = False
+                self._cells[i - 1][j].has_top_wall = False
+
+            # recursively call the new cell
+            self._break_through_walls_r(next_idx[0], next_idx[1])
+
