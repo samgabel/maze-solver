@@ -28,6 +28,7 @@ class Maze:
         self._create_cells()
         self._break_entrance_and_exit()
         self._break_through_walls_r(0, 0)
+        self._reset_cells_visited()
 
     def _create_cells(self):
         # create matrix of cells where `_num_col` are the num of `Cell` in the inner list and `_num_row` are the num of inner lists
@@ -74,6 +75,7 @@ class Maze:
         self._draw_cell(self._num_rows - 1, self._num_cols - 1)
 
     def _break_through_walls_r(self, i: int, j: int):
+        # we essentially just want to visit all the Cells in the matrix, randomly
         self._cells[i][j].visited = True
         while True:
             # list to store available Cell directions
@@ -89,7 +91,7 @@ class Maze:
             if i < self._num_rows - 1 and self._cells[i + 1][j].visited == False:
                 to_visit.append([i + 1, j])
 
-            # if there is nowhere left to go
+            # we only break the loop if there is nowhere left to go (breaks DFS traversal)
             if len(to_visit) == 0:
                 self._draw_cell(i, j)
                 return
@@ -117,3 +119,7 @@ class Maze:
             # recursively call the new cell
             self._break_through_walls_r(next_idx[0], next_idx[1])
 
+    def _reset_cells_visited(self):
+        for row in self._cells:
+            for cell in row:
+                cell.visited = False
