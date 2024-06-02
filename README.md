@@ -7,6 +7,8 @@
 
 This is a maze solver written completely in Python.
 
+![showcase](https://github.com/samgabel/maze-solver/blob/main/showcase.png?raw=true)
+
 
 
 
